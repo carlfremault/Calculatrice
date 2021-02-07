@@ -1,8 +1,9 @@
 package model;
 
 import control.Control;
+import control.Global;
 
-public class CalcString {
+public class CalcString implements Global {
 	
 	private Control control;
 	
@@ -29,8 +30,17 @@ public class CalcString {
 	}
 	
 	public void addString(String string) {
-		this.string = this.string + string;
-		this.operand = Float.parseFloat(string);
+		switch (string) {
+		case COMMA :
+			this.string = this.string + string;
+			this.operand = Float.parseFloat(string+ZERO);
+			break;
+		default :
+			this.string = this.string + string;
+			this.operand = Float.parseFloat(string);
+			break;
+		}
+	
 	}
 	
 	public CalcString(Control control) {

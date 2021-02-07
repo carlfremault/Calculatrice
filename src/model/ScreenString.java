@@ -1,8 +1,9 @@
 package model;
 
 import control.Control;
+import control.Global;
 
-public class ScreenString {
+public class ScreenString implements Global {
 	
 	private Control control;
 
@@ -22,7 +23,7 @@ public class ScreenString {
 			this.stringUpper = control.getCalcString2().getString();
 			this.operator = control.getOperator();
 			
-			this.control.updateScreen(stringUpper+" "+operator, "upper");
-			this.control.updateScreen(stringLower, "lower");
+			this.control.updateScreen(stringUpper+" "+operator, UPPER);
+			this.control.updateScreen(stringLower, LOWER);
 	}
 }
