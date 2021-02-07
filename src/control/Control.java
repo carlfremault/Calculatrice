@@ -39,6 +39,10 @@ public class Control implements Global {
 	
 	private Operator operator;
 	
+//	private Operator previousOperator;
+//	
+//	private Operator nextOperator;
+	
 	
 	private boolean decimalNumber = false;
 	
@@ -48,7 +52,11 @@ public class Control implements Global {
 	
 //	private boolean equalsPressed = false;
 //	
-	private boolean chainCalculation = false;
+//	private boolean chainCalculation = false;
+//	
+//	public boolean getChainCalculation() {
+//		return chainCalculation;
+//	}
 	
 	
 	public static void main(String[] args) {
@@ -75,9 +83,12 @@ public class Control implements Global {
 		this.calcString1 = new CalcString(this);
 		this.calcString1.setString(ZERO);
 		this.calcString2 = new CalcString(this);
+//		this.previousOperator = new Operator(this);
+//		this.nextOperator = new Operator (this);
 		this.operator = new Operator(this);
 		this.screenString = new ScreenString(this, this.operator);
 		this.resultString = "";
+//		this.previousOperator.setOperator("");
 	}
 	
 	private void resetCalculator() {
@@ -87,7 +98,7 @@ public class Control implements Global {
 		this.decimalNumber = false;
 		this.negativeNumber = false;
 		this.initState = true;
-		this.chainCalculation = false;
+//		this.chainCalculation = false;
 		this.resultString = "";
 		this.screenString.updateScreenString();
 	}
@@ -110,6 +121,7 @@ public class Control implements Global {
 		// Numbers
 		case ZERO :
 			pressedZero(buttonClicked);
+			this.screenString.updateScreenString();
 			break;
 		case ONE :
 		case TWO :
@@ -121,67 +133,93 @@ public class Control implements Global {
 		case EIGHT :
 		case NINE :
 			numberPressed(buttonClicked);
+			this.screenString.updateScreenString();
 			break;
 		// Comma
 		case COMMA :
 			pressedComma();
+			this.screenString.updateScreenString();
 			break;
 		// Plus Minus
 		case PLUSMINUS :
 			makeNumberNegative(); 
+			this.screenString.updateScreenString();
 			break;
 		// Backspace
 		case BACKSPACE :
 			pressedBackspace();
+			this.screenString.updateScreenString();
 			break;
 		// Operators
 		case DIVIDE :
 		case MULTIPLY :
 		case MINUS :
 		case PLUS :
-			if (!chainCalculation) {
-				this.operator.setOperator(buttonClicked);
+//			if (!chainCalculation) {
+				this.operator.setOperator(buttonClicked);			
 				calcString2.setString(calcString1.getString());
-				calcString1.setString(ZERO);
+//				calcString1.setString(ZERO);
+				this.screenString.updateScreenString();
 				initState = true;
 				negativeNumber = false;
 				decimalNumber = false;
-			} else {
-				
-			}
+//				this.chainCalculation = true;
+//			} else {
+//				this.nextOperator.setOperator(buttonClicked);
+//				calculateEquals();
+//				this.screenString.updateScreenString();
+//			}
+			
 			break;
 		// Equals
 		case EQUALS:
 			calculateEquals();
+			this.screenString.updateScreenString();
 			break;
 		// CE and C
 		case CE :
 			calcString1.setString(ZERO);
 			initState = true;
+			this.screenString.updateScreenString();
 			break;
 		case C :
 			resetCalculator();
+			this.screenString.updateScreenString();
 			break;
 		}
-		this.screenString.updateScreenString();
+//		this.screenString.updateScreenString();
 	}
 
 	private void calculateEquals() {
 		if (!this.calcString2.getString().equals("")) {
+//			if (this.operator.getOperator().equals("")) {
+//				this.operator = previousOperator;
+//			}
 			String operation = this.operator.getOperator();
 			this.operand1 = this.calcString1.getOperand();
-			if (!chainCalculation) {
+//			if (!chainCalculation) {
 				this.operand2 = this.calcString2.getOperand();
-			}
+//			}
 			switch (operation) {
 			case DIVIDE:
 				if (operand1 != 0) {
 					this.result = (operand2 / operand1);
-					this.resultString = calcString2.getString() + " " + operator.getOperator() + " "
-							+ calcString1.getString() + " =";
-					this.calcString2.setString(resultString);
+//					if (!chainCalculation) {
+						this.resultString = calcString2.getString() + " " + operator.getOperator() + " "
+								+ calcString1.getString() + " =";
+						
+//					} else {
+//						this.resultString = calcString2.getString() + " " + operator.getOperator() + " "
+//								+ calcString1.getString() + " " + nextOperator.getOperator()+"thisone";
+//						System.out.println(resultString);
+////						this.calcString1.setString(ZERO);
+//						this.operator.setOperator(this.nextOperator.getOperator());
+//					}
 					this.calcString1.setString(result.toString());
-					this.operator.setOperator("");
+					this.calcString2.setString(resultString);
+					
+//					this.previousOperator.setOperator(operation);
+//					this.operator.setOperator("");
 					this.operand2 = result;
 				} else {
 					JOptionPane.showMessageDialog(null, "Impossible de diviser par zéro");
@@ -215,7 +253,7 @@ public class Control implements Global {
 				this.operand2 = result;
 				break;
 			} // end of switch(position)
-			this.chainCalculation = true;
+//			this.chainCalculation = true;
 			if (result != null) {
 				if (result <= 0) {
 					this.negativeNumber = true;

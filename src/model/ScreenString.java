@@ -24,8 +24,11 @@ public class ScreenString implements Global {
 			this.stringLower = control.getCalcString1().getString();
 			this.stringUpper = control.getCalcString2().getString();
 			this.stringOperator = this.operator.getOperator();
-			
-			this.control.updateScreen(stringUpper+" "+stringOperator, UPPER);
+//			if (!this.control.getChainCalculation()) {
+				this.control.updateScreen(stringUpper+" "+stringOperator, UPPER);
+//			} else {
+//				this.control.updateScreen(stringUpper, UPPER);
+//			}
 			this.control.updateScreen(stringLower, LOWER);
 	}
 }
