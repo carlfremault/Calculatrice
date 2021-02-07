@@ -4,8 +4,10 @@ import java.awt.EventQueue;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 import model.CalcString;
+import model.Operator;
 import model.ScreenString;
 import view.FrmCalculatrice;
 
@@ -25,21 +27,28 @@ public class Control implements Global {
 		return this.calcString2;
 	}
 	
+	private String resultString;
+	
+	private Float operand1;
+	
+	private Float operand2;
+	
+	private Float result;
+	
 	private ScreenString screenString;
 	
-	private String operator = "";
+	private Operator operator;
 	
-	public String getOperator() {
-		return this.operator;
-	}
-	
-	// private boolean commaWaiting = false;
 	
 	private boolean decimalNumber = false;
 	
 	private boolean negativeNumber = false;
 	
 	private boolean initState = true;
+	
+//	private boolean equalsPressed = false;
+//	
+	private boolean chainCalculation = false;
 	
 	
 	public static void main(String[] args) {
@@ -66,17 +75,20 @@ public class Control implements Global {
 		this.calcString1 = new CalcString(this);
 		this.calcString1.setString(ZERO);
 		this.calcString2 = new CalcString(this);
-		this.screenString = new ScreenString(this);
+		this.operator = new Operator(this);
+		this.screenString = new ScreenString(this, this.operator);
+		this.resultString = "";
 	}
 	
 	private void resetCalculator() {
 		this.calcString1.setString(ZERO);
 		this.calcString2.emptyString();
-		this.operator = "";
-		// this.commaWaiting = false;
+		this.operator.setOperator("");
 		this.decimalNumber = false;
 		this.negativeNumber = false;
 		this.initState = true;
+		this.chainCalculation = false;
+		this.resultString = "";
 		this.screenString.updateScreenString();
 	}
 	
@@ -127,15 +139,21 @@ public class Control implements Global {
 		case MULTIPLY :
 		case MINUS :
 		case PLUS :
-			this.operator = buttonClicked;
-			calcString2.setString(calcString1.getString());
-			calcString1.setString(ZERO);
-			initState = true;
-			negativeNumber = false;
-			decimalNumber = false;
-			// commaWaiting = false;
+			if (!chainCalculation) {
+				this.operator.setOperator(buttonClicked);
+				calcString2.setString(calcString1.getString());
+				calcString1.setString(ZERO);
+				initState = true;
+				negativeNumber = false;
+				decimalNumber = false;
+			} else {
+				
+			}
 			break;
-		
+		// Equals
+		case EQUALS:
+			calculateEquals();
+			break;
 		// CE and C
 		case CE :
 			calcString1.setString(ZERO);
@@ -146,49 +164,95 @@ public class Control implements Global {
 			break;
 		}
 		this.screenString.updateScreenString();
-		
+	}
+
+	private void calculateEquals() {
+		if (!this.calcString2.getString().equals("")) {
+			String operation = this.operator.getOperator();
+			this.operand1 = this.calcString1.getOperand();
+			if (!chainCalculation) {
+				this.operand2 = this.calcString2.getOperand();
+			}
+			switch (operation) {
+			case DIVIDE:
+				if (operand1 != 0) {
+					this.result = (operand2 / operand1);
+					this.resultString = calcString2.getString() + " " + operator.getOperator() + " "
+							+ calcString1.getString() + " =";
+					this.calcString2.setString(resultString);
+					this.calcString1.setString(result.toString());
+					this.operator.setOperator("");
+					this.operand2 = result;
+				} else {
+					JOptionPane.showMessageDialog(null, "Impossible de diviser par zéro");
+				}
+				break;
+			case MULTIPLY:
+				this.result = (operand2 * operand1);
+				this.resultString = calcString2.getString() + " " + operator.getOperator() + " "
+						+ calcString1.getString() + " =";
+				this.calcString2.setString(resultString);
+				this.calcString1.setString(result.toString());
+				this.operator.setOperator("");
+				this.operand2 = result;
+				break;
+			case MINUS:
+				this.result = (operand2 - operand1);
+				this.resultString = calcString2.getString() + " " + operator.getOperator() + " "
+						+ calcString1.getString() + " =";
+				this.calcString2.setString(resultString);
+				this.calcString1.setString(result.toString());
+				this.operator.setOperator("");
+				this.operand2 = result;
+				break;
+			case PLUS:
+				this.result = (operand2 + operand1);
+				this.resultString = calcString2.getString() + " " + operator.getOperator() + " "
+						+ calcString1.getString() + " =";
+				this.calcString2.setString(resultString);
+				this.calcString1.setString(result.toString());
+				this.operator.setOperator("");
+				this.operand2 = result;
+				break;
+			} // end of switch(position)
+			this.chainCalculation = true;
+			if (result != null) {
+				if (result <= 0) {
+					this.negativeNumber = true;
+				} else {
+					this.negativeNumber = false;
+				}
+				if (result % 1 != 0) {
+					this.decimalNumber = true;
+				} else {
+					this.decimalNumber = false;
+				} 
+			}
+		}
 	}
 
 	private void pressedComma() {
-		// this.commaWaiting = !this.commaWaiting;
-		if (initState) {
-			initState = false;
+		if (!decimalNumber) {
+			if (initState) {
+				initState = false;
+			}
+			calcString1.addString(COMMA);
+			decimalNumber = true;
 		}
-		calcString1.addString(COMMA);
-		decimalNumber = true;
 	}
 
 	private void pressedZero(String buttonClicked) {
 		if (!initState) {
 			calcString1.addString(buttonClicked);
 		} 
-//		else if (initState && commaWaiting) {
-//			calcString1.setString(ZERO+COMMA+buttonClicked);
-//			decimalNumber = true;
-//			commaWaiting = false;
-//			initState = false;
-//		}
 	}
 
 	private void numberPressed(String buttonClicked) {
-		
 		if (initState) {
-			if (commaWaiting) {
-				calcString1.setString(ZERO+COMMA+buttonClicked);
-				commaWaiting = false;
-				decimalNumber = true;
-			} else {
 				calcString1.setString(buttonClicked);
-			}
 			initState = false;
 		} else {
-			if (commaWaiting && !decimalNumber) {
-				calcString1.addString(COMMA+buttonClicked);
-				commaWaiting = false;
-				decimalNumber = true;
-			} else {
 				calcString1.addString(buttonClicked);
-			}
 		}
 	}
 
@@ -207,6 +271,7 @@ public class Control implements Global {
 			calcString1.setString(number);
 		}
 	}
+	
 	private void pressedBackspace() {
 		if (!initState) {
 			String numberToTreat = calcString1.getString();
@@ -218,31 +283,10 @@ public class Control implements Global {
 					decimalNumber = false;
 				}
 				calcString1.setString(numberToTreat.substring(0, (calcString1.getString().length() - 1)));
-				System.out.println("CalcString1 = "+calcString1.getString());
-				System.out.println("Length = "+calcString1.getString().length());
-				System.out.println("***"+calcString1.getString()+"***");
-				//if (calcString1.getString().charAt(calcString1.getString().length()-1)== '0') {
-				if (calcString1.getString() == ZERO) {
-					
+				if (calcString1.getString().equals(ZERO)) {
 					initState = true;
 				}
 			}
 		}
 	}
-	
-//	private void pressedBackspace() {
-//		if (!initState) {
-//			String numberToTreat = calcString1.getString();
-//			if (numberToTreat.length() == 1) {
-//				calcString1.setString(ZERO);
-//				initState = true;
-//			} else {
-//				calcString1.setString(numberToTreat.substring(0, (calcString1.getString().length() - 1)));
-//				if (calcString1.getString().charAt(calcString1.getString().length()-1)== '.') {
-//					calcString1.setString(numberToTreat.substring(0, (calcString1.getString().length() - 1)));
-//					decimalNumber = false;
-//				}
-//			}
-//		}
-//	}
 }

@@ -9,7 +9,10 @@ public class CalcString implements Global {
 	
 	private String string;
 	
-	private float operand;
+	public CalcString(Control control) {
+		this.control = control;
+		this.string = "";
+	}
 	
 	public void emptyString() {
 		this.string = "";
@@ -18,34 +21,37 @@ public class CalcString implements Global {
 	public void setString(String string) {
 		this.string = "";
 		this.string = string;
-		this.operand = Float.parseFloat(string);
 	}
 	
 	public String getString() {
-		return this.string;
+		return removeZero(string);
 	}
 	
+	public String getStringForScreen() {
+		return removeDot(removeZero(string));
+	}
+
 	public Float getOperand() {
-		return this.operand;
+		return Float.parseFloat(this.string);
 	}
 	
 	public void addString(String string) {
-		switch (string) {
-		case COMMA :
-			this.string = this.string + string;
-			this.operand = Float.parseFloat(string+ZERO);
-			break;
-		default :
-			this.string = this.string + string;
-			this.operand = Float.parseFloat(string);
-			break;
-		}
-	
+			this.string = removeZero(this.string) + string;
 	}
 	
-	public CalcString(Control control) {
-		this.control = control;
-		this.string = "";
+	public String removeZero(String string) {
+		if (string.endsWith(".0")) {
+			string = string.substring(0, string.length()-2);
+		} 
+		return string;
 	}
+	
+	public String removeDot(String string) {
+		if (string.endsWith(".")) {
+			string = string.substring(0, string.length()-1);
+		} 
+		return string;
+	}
+
 
 }
