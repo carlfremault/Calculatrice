@@ -1,7 +1,13 @@
 package control;
 
+/**
+ * Interface qui définit des différentes variables
+ * 
+ * @author Carl Fremault
+ *
+ */
 public interface Global {
-	
+
 	String ZERO = "0";
 	String ONE = "1";
 	String TWO = "2";
@@ -12,23 +18,26 @@ public interface Global {
 	String SEVEN = "7";
 	String EIGHT = "8";
 	String NINE = "9";
-	
+
 	String PLUS = "+";
 	String MINUS = "-";
 	String MULTIPLY = "x";
 	String DIVIDE = "÷";
 	String EQUALS = "=";
-	
+
 	String BACKSPACE = "←";
 	String PLUSMINUS = "+/-";
-	
+
 	String CE = "CE";
 	String C = "C";
-	
+
 	String COMMA = ".";
 	String NEGATIVE = "-";
-	
+
 	String LOWER = "lower";
 	String UPPER = "upper";
+
+	String SPACE = " ";
+	String DIVIDEBYZERO = "Impossible de diviser par zéro.";
 
 }
