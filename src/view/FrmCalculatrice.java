@@ -31,6 +31,11 @@ public class FrmCalculatrice extends JFrame implements Global {
 		control.evenementFrmCalculatrice(e);
 	}
 	
+	/**
+	 * M
+	 * @param string
+	 * @param position
+	 */
 	public void setLabelText(String string, String position) {
 		switch (position) {
 		case UPPER :

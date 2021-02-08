@@ -1,5 +1,7 @@
 package model;
 
+import java.math.BigDecimal;
+
 import control.Control;
 import control.Global;
 
@@ -31,8 +33,8 @@ public class CalcString implements Global {
 		return removeDot(removeZero(string));
 	}
 
-	public Float getOperand() {
-		return Float.parseFloat(this.string);
+	public BigDecimal getOperand() {
+		return new BigDecimal(this.string);
 	}
 	
 	public void addString(String string) {

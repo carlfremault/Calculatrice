@@ -2,6 +2,7 @@ package control;
 
 import java.awt.EventQueue;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -29,11 +30,11 @@ public class Control implements Global {
 
 	private String resultString;
 
-	private Float operand1;
+	private BigDecimal operand1;
 
-	private Float operand2;
+	private BigDecimal operand2;
 
-	private Float result;
+	private BigDecimal result;
 
 	private ScreenString screenString;
 
@@ -167,52 +168,53 @@ public class Control implements Global {
 			this.operand2 = this.calcString2.getOperand();
 			switch (operation) {
 			case DIVIDE:
-				if (operand1 != 0) {
-					this.result = (operand2 / operand1);
-					this.resultString = calcString2.getString() + " " + operator.getOperator() + " "
-							+ calcString1.getString() + " =";
-					this.calcString1.setString(result.toString());
-					this.calcString2.setString(resultString);
-					this.operand2 = result;
+				if (operand1.intValue() != 0) {
+					this.result = (operand2.divide(operand1));
+					
 				} else {
 					JOptionPane.showMessageDialog(null, "Impossible de diviser par zéro");
 				}
 				break;
 			case MULTIPLY:
-				this.result = (operand2 * operand1);
-				this.resultString = calcString2.getString() + " " + operator.getOperator() + " "
-						+ calcString1.getString() + " =";
-				this.calcString2.setString(resultString);
-				this.calcString1.setString(result.toString());
-				this.operator.setOperator("");
-				this.operand2 = result;
+				this.result = (operand2.multiply(operand1));
+//				this.resultString = calcString2.getString() + " " + operator.getOperator() + " "
+//						+ calcString1.getString() + " =";
+//				this.calcString2.setString(resultString);
+//				this.calcString1.setString(result.toString());
+//				this.operator.setOperator("");
+//				this.operand2 = result;
 				break;
 			case MINUS:
-				this.result = (operand2 - operand1);
-				this.resultString = calcString2.getString() + " " + operator.getOperator() + " "
-						+ calcString1.getString() + " =";
-				this.calcString2.setString(resultString);
-				this.calcString1.setString(result.toString());
-				this.operator.setOperator("");
-				this.operand2 = result;
+				this.result = (operand2.subtract(operand1));
+//				this.resultString = calcString2.getString() + " " + operator.getOperator() + " "
+//						+ calcString1.getString() + " =";
+//				this.calcString2.setString(resultString);
+//				this.calcString1.setString(result.toString());
+//				this.operator.setOperator("");
+//				this.operand2 = result;
 				break;
 			case PLUS:
-				this.result = (operand2 + operand1);
-				this.resultString = calcString2.getString() + " " + operator.getOperator() + " "
-						+ calcString1.getString() + " =";
-				this.calcString2.setString(resultString);
-				this.calcString1.setString(result.toString());
-				this.operator.setOperator("");
-				this.operand2 = result;
+				this.result = (operand2.add(operand1));
+//				this.resultString = calcString2.getString() + " " + operator.getOperator() + " "
+//						+ calcString1.getString() + " =";
+//				this.calcString2.setString(resultString);
+//				this.calcString1.setString(result.toString());
+//				this.operator.setOperator("");
+//				this.operand2 = result;
 				break;
 			} // end of switch(position)
+			this.resultString = calcString2.getString() + " " + operator.getOperator() + " "
+					+ calcString1.getString() + " =";
+			this.calcString1.setString(result.toString());
+			this.calcString2.setString(resultString);
+			this.operand2 = result;
 			if (result != null) {
-				if (result <= 0) {
+				if (result.doubleValue() <= 0) {
 					this.negativeNumber = true;
 				} else {
 					this.negativeNumber = false;
 				}
-				if (result % 1 != 0) {
+				if (result.scale() > 0) {
 					this.decimalNumber = true;
 				} else {
 					this.decimalNumber = false;
