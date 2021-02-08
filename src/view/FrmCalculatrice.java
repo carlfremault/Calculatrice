@@ -52,7 +52,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 		setResizable(false);
 		setTitle("Calculatrice");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 345, 530);
+		setBounds(100, 100, 345, 330);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
@@ -88,7 +88,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 			}
 		});
 		btnCE.setBackground(Color.LIGHT_GRAY);
-		btnCE.setBounds(10, 90, 70, 70);
+		btnCE.setBounds(10, 90, 70, 35);
 		contentPane.add(btnCE);
 		
 		JButton btn7 = new JButton(SEVEN);
@@ -99,7 +99,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 			}
 		});
 		btn7.setBackground(Color.LIGHT_GRAY);
-		btn7.setBounds(10, 170, 70, 70);
+		btn7.setBounds(10, 130, 70, 35);
 		contentPane.add(btn7);
 		
 		JButton btn4 = new JButton(FOUR);
@@ -110,7 +110,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 			}
 		});
 		btn4.setBackground(Color.LIGHT_GRAY);
-		btn4.setBounds(10, 250, 70, 70);
+		btn4.setBounds(10, 170, 70, 35);
 		contentPane.add(btn4);
 		
 		JButton btn1 = new JButton(ONE);
@@ -121,7 +121,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 			}
 		});
 		btn1.setBackground(Color.LIGHT_GRAY);
-		btn1.setBounds(10, 330, 70, 70);
+		btn1.setBounds(10, 210, 70, 35);
 		contentPane.add(btn1);
 		
 		JButton btnPlusMinus = new JButton(PLUSMINUS);
@@ -132,7 +132,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 			}
 		});
 		btnPlusMinus.setBackground(Color.LIGHT_GRAY);
-		btnPlusMinus.setBounds(10, 410, 70, 70);
+		btnPlusMinus.setBounds(10, 250, 70, 35);
 		contentPane.add(btnPlusMinus);
 		
 		JButton btnC = new JButton(C);
@@ -143,7 +143,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 			}
 		});
 		btnC.setBackground(Color.LIGHT_GRAY);
-		btnC.setBounds(90, 90, 70, 70);
+		btnC.setBounds(90, 90, 70, 35);
 		contentPane.add(btnC);
 		
 		JButton btn8 = new JButton(EIGHT);
@@ -154,7 +154,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 			}
 		});
 		btn8.setBackground(Color.LIGHT_GRAY);
-		btn8.setBounds(90, 170, 70, 70);
+		btn8.setBounds(90, 130, 70, 35);
 		contentPane.add(btn8);
 		
 		JButton btn5 = new JButton(FIVE);
@@ -165,7 +165,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 			}
 		});
 		btn5.setBackground(Color.LIGHT_GRAY);
-		btn5.setBounds(90, 250, 70, 70);
+		btn5.setBounds(90, 170, 70, 35);
 		contentPane.add(btn5);
 		
 		JButton btn2 = new JButton(TWO);
@@ -176,7 +176,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 			}
 		});
 		btn2.setBackground(Color.LIGHT_GRAY);
-		btn2.setBounds(90, 330, 70, 70);
+		btn2.setBounds(90, 210, 70, 35);
 		contentPane.add(btn2);
 		
 		JButton btn0 = new JButton(ZERO);
@@ -187,7 +187,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 			}
 		});
 		btn0.setBackground(Color.LIGHT_GRAY);
-		btn0.setBounds(90, 410, 70, 70);
+		btn0.setBounds(90, 250, 70, 35);
 		contentPane.add(btn0);
 		
 		JButton btnBackspace = new JButton(BACKSPACE);
@@ -198,7 +198,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 			}
 		});
 		btnBackspace.setBackground(Color.LIGHT_GRAY);
-		btnBackspace.setBounds(170, 90, 70, 70);
+		btnBackspace.setBounds(170, 90, 70, 35);
 		contentPane.add(btnBackspace);
 		
 		JButton btn9 = new JButton(NINE);
@@ -209,7 +209,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 			}
 		});
 		btn9.setBackground(Color.LIGHT_GRAY);
-		btn9.setBounds(170, 170, 70, 70);
+		btn9.setBounds(170, 130, 70, 35);
 		contentPane.add(btn9);
 		
 		JButton btn6 = new JButton(SIX);
@@ -220,7 +220,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 			}
 		});
 		btn6.setBackground(Color.LIGHT_GRAY);
-		btn6.setBounds(170, 250, 70, 70);
+		btn6.setBounds(170, 170, 70, 35);
 		contentPane.add(btn6);
 		
 		JButton btn3 = new JButton(THREE);
@@ -231,7 +231,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 			}
 		});
 		btn3.setBackground(Color.LIGHT_GRAY);
-		btn3.setBounds(170, 330, 70, 70);
+		btn3.setBounds(170, 210, 70, 35);
 		contentPane.add(btn3);
 		
 		JButton btnComma = new JButton(COMMA);
@@ -242,7 +242,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 			}
 		});
 		btnComma.setBackground(Color.LIGHT_GRAY);
-		btnComma.setBounds(170, 410, 70, 70);
+		btnComma.setBounds(170, 250, 70, 35);
 		contentPane.add(btnComma);
 		
 		JButton btnDivide = new JButton(DIVIDE);
@@ -253,7 +253,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 			}
 		});
 		btnDivide.setBackground(Color.LIGHT_GRAY);
-		btnDivide.setBounds(250, 90, 70, 70);
+		btnDivide.setBounds(250, 90, 70, 35);
 		contentPane.add(btnDivide);
 		
 		JButton btnMultiply = new JButton(MULTIPLY);
@@ -264,7 +264,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 			}
 		});
 		btnMultiply.setBackground(Color.LIGHT_GRAY);
-		btnMultiply.setBounds(250, 170, 70, 70);
+		btnMultiply.setBounds(250, 130, 70, 35);
 		contentPane.add(btnMultiply);
 		
 		JButton btnMinus = new JButton(MINUS);
@@ -275,7 +275,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 			}
 		});
 		btnMinus.setBackground(Color.LIGHT_GRAY);
-		btnMinus.setBounds(250, 250, 70, 70);
+		btnMinus.setBounds(250, 170, 70, 35);
 		contentPane.add(btnMinus);
 		
 		JButton btnPlus = new JButton(PLUS);
@@ -286,7 +286,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 			}
 		});
 		btnPlus.setBackground(Color.LIGHT_GRAY);
-		btnPlus.setBounds(250, 330, 70, 70);
+		btnPlus.setBounds(250, 210, 70, 35);
 		contentPane.add(btnPlus);
 		
 		JButton btnEquals = new JButton(EQUALS);
@@ -297,7 +297,7 @@ public class FrmCalculatrice extends JFrame implements Global {
 			}
 		});
 		btnEquals.setBackground(Color.LIGHT_GRAY);
-		btnEquals.setBounds(250, 410, 70, 70);
+		btnEquals.setBounds(250, 250, 70, 35);
 		contentPane.add(btnEquals);
 		
 	}
