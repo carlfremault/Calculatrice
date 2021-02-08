@@ -15,6 +15,12 @@ import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * Vue de l'application
+ * 
+ * @author Carl Fremault
+ *
+ */
 public class FrmCalculatrice extends JFrame implements Global {
 
 	private JPanel contentPane;
@@ -29,10 +35,10 @@ public class FrmCalculatrice extends JFrame implements Global {
 	}
 
 	/**
-	 * M
+	 * Méthode qui gère l'affichage sur l'écran.
 	 * 
-	 * @param string
-	 * @param position
+	 * @param string = Information à afficher
+	 * @param position = position où afficher (UPPER ou LOWER en fonction)
 	 */
 	public void setLabelText(String string, String position) {
 		switch (position) {
@@ -46,7 +52,8 @@ public class FrmCalculatrice extends JFrame implements Global {
 	}
 
 	/**
-	 * Create the frame.
+	 * Constructeur de l'interface utilisateur
+	 * @param control = le contrôleur associé
 	 */
 	public FrmCalculatrice(Control control) {
 

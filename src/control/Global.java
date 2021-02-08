@@ -1,7 +1,7 @@
 package control;
 
 /**
- * Interface qui définit des différentes variables
+ * Interface qui définit des différentes variables.
  * 
  * @author Carl Fremault
  *

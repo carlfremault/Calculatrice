@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import control.Global;
 
 /**
- * Classe CalcString gère la saisie des opérandes
+ * Classe CalcString gère la saisie des opérandes.
  * 
  * @author Carl Fremault
  *
@@ -13,7 +13,7 @@ import control.Global;
 public class CalcString implements Global {
 
 	/**
-	 * String qui contient le CalcString
+	 * String qui contient le CalcString.
 	 */
 	private String string;
 
@@ -25,14 +25,14 @@ public class CalcString implements Global {
 	}
 
 	/**
-	 * Méthode qui vide le contenu du CalcString
+	 * Méthode qui vide le contenu du CalcString.
 	 */
 	public void emptyString() {
 		this.string = "";
 	}
 
 	/**
-	 * Setter pour le contenu du CalcString
+	 * Setter pour le contenu du CalcString.
 	 * 
 	 * @param string = Valeur à mettre
 	 */
@@ -42,22 +42,23 @@ public class CalcString implements Global {
 	}
 
 	/**
-	 * Getter pour le contenu du CalcString
+	 * Getter pour le contenu du CalcString.
 	 * 
 	 * @return le contenu du CalcString après avoir appelé la méthode removeZero
-	 *         pour enlever des zéros éventuels à la fin d'un nombre décimal
+	 *         pour enlever des zéros éventuels à la fin d'un nombre décimal.
 	 */
 	public String getString() {
-		return removeZero(string);
+//		return removeZero(string);
+		return string;
 	}
 
 	/**
-	 * Getter pour le contenu du CalcString
+	 * Getter pour le contenu du CalcString.
 	 * 
 	 * @return le contenu du CalcString après avoir appelé la méthode removeZero
 	 *         pour enlever des zéros éventuels à la fin d'un nombre décimal, ainsi
 	 *         que la méthode removeDot pour enlever une virgule éventuelle à la fin
-	 *         d'un nombre décimal
+	 *         d'un nombre décimal.
 	 */
 	public String getStringForScreen() {
 		return removeDot(removeZero(string));
@@ -73,7 +74,7 @@ public class CalcString implements Global {
 	}
 
 	/**
-	 * Méthode qui rajoute un string au contenu du CalcString
+	 * Méthode qui rajoute un string au contenu du CalcString.
 	 * 
 	 * @param string à rajouter
 	 */
@@ -83,7 +84,7 @@ public class CalcString implements Global {
 	}
 
 	/**
-	 * Méthode qui vérifie si un string termine par ".0" et l'enlève si c'est le cas
+	 * Méthode qui vérifie si un string termine par ".0" et l'enlève si c'est le cas.
 	 * 
 	 * @param string à vérifier
 	 * @return le string sans ".0" à la fin
@@ -97,7 +98,7 @@ public class CalcString implements Global {
 
 	/**
 	 * Méthode qui vérifie si un string termine par une virgule et l'enlève si c'est
-	 * le cas
+	 * le cas.
 	 * 
 	 * @param string à vérifier
 	 * @return le string sans virgule à la fin

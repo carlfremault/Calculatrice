@@ -23,7 +23,7 @@ public class Control implements Global {
 	 * La vue associée
 	 */
 	private FrmCalculatrice frmCalculatrice;
-	/*
+	/**
 	 * String pour définir première opérande
 	 */
 	private CalcString calcString1;
@@ -75,12 +75,12 @@ public class Control implements Global {
 	 */
 	private Operator previousOperator;
 	/**
-	 * Booléen qui définit si un nombre est décimal
+	 * Booléen qui définit si un nombre est décimal.
 	 */
 	private boolean decimalNumber = false;
 	/**
 	 * Booléen qui définit si la première opérande (et son String associé) est en
-	 * état initial (0)
+	 * état initial (0).
 	 */
 	private boolean initState = true;
 
@@ -112,7 +112,7 @@ public class Control implements Global {
 	}
 
 	/**
-	 * Méthode qui initialise la calculatrice
+	 * Méthode qui initialise la calculatrice.
 	 */
 	private void initializeCalculator() {
 		this.calcString1 = new CalcString();
@@ -126,7 +126,7 @@ public class Control implements Global {
 	}
 
 	/**
-	 * Méthode pour réinitialiser la calculatrice
+	 * Méthode pour réinitialiser la calculatrice.
 	 */
 	private void resetCalculator() {
 		this.calcString1.setString(ZERO);
@@ -142,7 +142,7 @@ public class Control implements Global {
 
 	/**
 	 * Méthode qui envoie une demande à la vue frmCalculatrice pour mettre à jour
-	 * l'affichage
+	 * l'affichage.
 	 * 
 	 * @param string   = le message à afficher
 	 * @param position = la position (UPPER ou LOWER) où afficher le message
@@ -153,7 +153,7 @@ public class Control implements Global {
 
 	/**
 	 * Méthode qui reçoit évenement depuis la vue frmCalculatrice puis envoie sur
-	 * les méthodes appropriés
+	 * les méthodes appropriés.
 	 * 
 	 * @param e = le bouton qui a été cliqué
 	 */
@@ -222,7 +222,7 @@ public class Control implements Global {
 	/**
 	 * Méthode pour gérer les calculs après appui sur la touche "égale" Effectue les
 	 * calculs puis appelle la méthode afterEquals pour gérer les affichages et les
-	 * variables Permets calculs à répétition en appuyant "égale" successivement
+	 * variables Permets calculs à répétition en appuyant "égale" successivement.
 	 */
 	private void equals() {
 		if (!initState) {
@@ -255,34 +255,85 @@ public class Control implements Global {
 			switch (this.previousOperator.getOperator()) {
 			case PLUS:
 				this.result = this.calcString1.getOperand().add(operand1);
-				this.calculationString = this.calcString1.getString() + SPACE + this.previousOperator.getOperator()
-						+ SPACE + this.operand1.toString() + SPACE + EQUALS;
-				this.updateScreen(calculationString, UPPER);
-				this.calcString1.setString(this.result.toString());
-				this.updateScreen(this.calcString1.getString(), LOWER);
+				afterEqualsChain();
 				break;
+			case MINUS:
+				this.result = this.calcString1.getOperand().subtract(operand1);
+				afterEqualsChain();
+				break;
+			case MULTIPLY:
+				this.result = this.calcString1.getOperand().multiply(operand1);
+				afterEqualsChain();
+				break;
+			case DIVIDE:
+				if (this.operand1.compareTo(BigDecimal.ZERO) == 0) {
+					JOptionPane.showMessageDialog(null, DIVIDEBYZERO);
+				} else {
+					this.result = this.calcString1.getOperand().divide(operand1);
+					afterEqualsChain();
+				}
+				break;
+			case "":
+				if (this.calcString1.getString().equals(ZERO) && !this.operator.getOperator().equals("")) {
+					switch (this.operator.getOperator()) {
+					case PLUS:
+						this.result = this.calcString2.getOperand().add(this.calcString1.getOperand());
+						// this.calculationString = this.calculationString+SPACE+this.calcString1.getString()+SPACE+EQUALS;
+						afterEquals();
+						// afterEqualsChain();
+						break;
+					case MINUS:
+						this.result = this.calcString2.getOperand().subtract(this.calcString1.getOperand());
+						afterEqualsChain();
+						break;
+					case MULTIPLY:
+						this.result = this.calcString2.getOperand().multiply(this.calcString1.getOperand());
+						afterEqualsChain();
+						break;
+					case DIVIDE:
+						JOptionPane.showMessageDialog(null, DIVIDEBYZERO);
+						resetCalculator();
+						break;
+					}
+
+				}
 			}
 		}
 	}
 
 	/**
-	 * Methode met à jour la variable calcString1 Appelle la méthode updateScreen
+	 * Méthode met à jour la variable calcString1. Appelle la méthode updateScreen
+	 * pour gérer les affichages du calcul (en haut de l'écran) et du résultat (en
+	 * bas de l'écran). Cette méthode est appelé lors d'un enchaînement d'appuis sur
+	 * la touche 'égale' et ne réinitialise pas l'état de la machine pour pouvoir
+	 * enchaîner les calculs.
+	 */
+	private void afterEqualsChain() {
+		this.calculationString = this.calcString1.getStringForScreen() + SPACE + this.previousOperator.getOperator()
+				+ SPACE + this.operand1.toString() + SPACE + EQUALS;
+		this.updateScreen(calculationString, UPPER);
+		this.calcString1.setString(this.result.toPlainString());
+		this.updateScreen(this.calcString1.getStringForScreen(), LOWER);
+	}
+
+	/**
+	 * Méthode met à jour la variable calcString1. Appelle la méthode updateScreen
 	 * pour gérer les affichages du calcul (en haut de l'écran) et du résultat (en
 	 * bas de l'écran) puis réinitialise l'état de la machine pour accepter une
-	 * nouvelle opérande
+	 * nouvelle opérande.
 	 */
 	private void afterEquals() {
-		this.calculationString = this.calculationString + SPACE + this.calcString1.getString() + SPACE + EQUALS;
+		this.calculationString = this.calculationString + SPACE + this.calcString1.getStringForScreen() + SPACE + EQUALS;
 		this.updateScreen(calculationString, UPPER);
-		this.calcString1.setString(this.result.toString());
+		this.calcString1.setString(this.result.toPlainString());
 		this.initState = true;
-		this.updateScreen(this.calcString1.getString(), LOWER);
+		this.updateScreen(this.calcString1.getStringForScreen(), LOWER);
 	}
 
 	/**
 	 * Méthode pour gérer les calculs après appui sur une des touches "opérateur"
 	 * Effectue les calculs puis appelle la méthode afterCalculate pour gérer les
-	 * affichages et les variables
+	 * affichages et les variables.
 	 * 
 	 * @param buttonClicked = le bouton appuyé
 	 */
@@ -315,7 +366,7 @@ public class Control implements Global {
 			this.calcString2.setString(this.calcString1.getString());
 			this.operand2 = this.calcString2.getOperand();
 			this.initState = true;
-			this.calculationString = calcString1.getString() + SPACE + this.operator.getOperator();
+			this.calculationString = calcString1.getStringForScreen() + SPACE + this.operator.getOperator();
 			this.updateScreen(this.calculationString, UPPER);
 			break;
 		}
@@ -325,16 +376,16 @@ public class Control implements Global {
 	 * Methode met à jour les variables calcString1, calcString2 et operand2.
 	 * Appelle la méthode updateScreen pour gérer les affichages du calcul (en haut
 	 * de l'écran) et du résultat (en bas de l'écran) puis réinitialise l'état de la
-	 * machine pour accepter une nouvelle opérande
+	 * machine pour accepter une nouvelle opérande.
 	 */
 	private void afterCalculate() {
-		this.calculationString = this.calculationString + SPACE + this.calcString1.getString() + SPACE
+		this.calculationString = this.calculationString + SPACE + this.calcString1.getStringForScreen() + SPACE
 				+ this.operator.getOperator();
 		this.updateScreen(this.calculationString, UPPER);
-		this.calcString2.setString(this.result.toString());
+		this.calcString2.setString(this.result.toPlainString());
 		this.operand2 = this.calcString2.getOperand();
-		this.calcString1.setString(this.result.toString());
-		this.updateScreen(this.calcString1.getString(), LOWER);
+		this.calcString1.setString(this.result.toPlainString());
+		this.updateScreen(this.calcString1.getStringForScreen(), LOWER);
 		this.initState = true;
 	}
 
@@ -360,8 +411,8 @@ public class Control implements Global {
 	}
 
 	/**
-	 * Méthode qui gère l'appui sur le bouton zéro. N'accept que les zéros si la
-	 * calculatrice n'est pas en état 'initial'
+	 * Méthode qui gère l'appui sur le bouton zéro. N'accepte les zéros que si la
+	 * calculatrice n'est pas en état 'initial'.
 	 * 
 	 * @param buttonClicked = le bouton appuyé
 	 */
@@ -374,7 +425,7 @@ public class Control implements Global {
 	}
 
 	/**
-	 * Méthode qui gère l'appui sur un des boutons des chiffres
+	 * Méthode qui gère l'appui sur un des boutons des chiffres.
 	 * 
 	 * @param buttonClicked = le bouton appuyé
 	 */
@@ -389,17 +440,14 @@ public class Control implements Global {
 
 	/**
 	 * Méthode qui gère l'appui sur le bouton "+/-" Vérifie si un nombre est déjà
-	 * négatif ou non et applique la demande en fonction
+	 * négatif ou non et applique la demande en fonction.
 	 */
 	private void makeNumberNegative() {
 		String number = calcString1.getString();
 		if (number.contains(MINUS)) {
 			number = number.substring(1);
-//			negativeNumber = false;
-
 		} else if (!number.equals(ZERO)) {
 			number = NEGATIVE + number;
-//			negativeNumber = true;
 		}
 		calcString1.setString(number);
 	}
@@ -407,7 +455,7 @@ public class Control implements Global {
 	/**
 	 * Méthode pour gérer le bouton 'correction' Gère également si on 'corrige' un
 	 * nombre décimal (modifie le booleen 'decimalNumber en fonction si on enlève la
-	 * virgule)
+	 * virgule).
 	 */
 	private void pressedBackspace() {
 		if (!initState) {
