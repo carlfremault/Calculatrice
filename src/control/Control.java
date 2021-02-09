@@ -3,6 +3,7 @@ package control;
 import java.awt.EventQueue;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -119,9 +120,9 @@ public class Control implements Global {
 		this.calcString1.setString(ZERO);
 		this.calcString2 = new CalcString();
 		this.operator = new Operator();
-		this.operator.setOperator("");
+		this.operator.setOperator(EQUALS);
 		this.previousOperator = new Operator();
-		this.previousOperator.setOperator("");
+		this.previousOperator.setOperator(EQUALS);
 		this.calculationString = new String();
 	}
 
@@ -131,8 +132,8 @@ public class Control implements Global {
 	private void resetCalculator() {
 		this.calcString1.setString(ZERO);
 		this.calcString2.emptyString();
-		this.operator.setOperator("");
-		this.previousOperator.setOperator("");
+		this.operator.setOperator(EQUALS);
+		this.previousOperator.setOperator(EQUALS);
 		this.updateScreen(calcString1.getString(), LOWER);
 		this.updateScreen("", UPPER);
 		this.decimalNumber = false;
@@ -162,7 +163,7 @@ public class Control implements Global {
 		String buttonClicked = ((JButton) e.getSource()).getText();
 
 		// CONSOLE OUTPUT activate for debugging
-		System.out.println(buttonClicked);
+		// System.out.println(buttonClicked);
 
 		switch (buttonClicked) {
 		// Numbers
@@ -220,118 +221,89 @@ public class Control implements Global {
 	}
 
 	/**
-	 * Méthode pour gérer les calculs après appui sur la touche "égale" Effectue les
-	 * calculs puis appelle la méthode afterEquals pour gérer les affichages et les
-	 * variables Permets calculs à répétition en appuyant "égale" successivement.
+	 * Méthode pour gérer les calculs après appui sur la touche "égale". Effectue
+	 * les calculs puis appelle la méthode afterCalculate pour gérer les affichages
+	 * et les variables. Permets calculs à répétition en appuyant "égale"
+	 * successivement.
 	 */
 	private void equals() {
-		if (!initState) {
+		// Check for chaining calculations by pressing 'equals' in succession
+		if (!this.operator.getOperator().equals(EQUALS)) {
+			// No chain
 			this.operand1 = this.calcString1.getOperand();
 			this.previousOperator.setOperator(this.operator.getOperator());
-			this.operator.setOperator("");
+			this.operator.setOperator(EQUALS);
 			switch (this.previousOperator.getOperator()) {
 			case PLUS:
 				this.result = this.operand2.add(operand1);
-				afterEquals();
+				afterCalculate();
 				break;
 			case MINUS:
 				this.result = this.operand2.subtract(operand1);
-				afterEquals();
+				afterCalculate();
 				break;
 			case MULTIPLY:
 				this.result = this.operand2.multiply(operand1);
-				afterEquals();
+				afterCalculate();
 				break;
 			case DIVIDE:
 				if (this.operand1.compareTo(BigDecimal.ZERO) == 0) {
 					JOptionPane.showMessageDialog(null, DIVIDEBYZERO);
+					resetCalculator();
 				} else {
-					this.result = this.operand2.divide(operand1);
-					afterEquals();
+					this.result = this.operand2.divide(operand1, 10, RoundingMode.HALF_UP);
+					afterCalculate();
 				}
 				break;
 			}
 		} else {
+			// Chain
 			switch (this.previousOperator.getOperator()) {
 			case PLUS:
-				this.result = this.calcString1.getOperand().add(operand1);
+				this.result = this.operand2.add(operand1);
 				afterEqualsChain();
 				break;
 			case MINUS:
-				this.result = this.calcString1.getOperand().subtract(operand1);
+				this.result = this.operand2.subtract(operand1);
 				afterEqualsChain();
 				break;
 			case MULTIPLY:
-				this.result = this.calcString1.getOperand().multiply(operand1);
+				this.result = this.operand2.multiply(operand1);
 				afterEqualsChain();
 				break;
 			case DIVIDE:
 				if (this.operand1.compareTo(BigDecimal.ZERO) == 0) {
 					JOptionPane.showMessageDialog(null, DIVIDEBYZERO);
+					resetCalculator();
 				} else {
-					this.result = this.calcString1.getOperand().divide(operand1);
+					this.result = this.operand2.divide(operand1, 10, RoundingMode.HALF_UP);
 					afterEqualsChain();
 				}
 				break;
-			case "":
-				if (this.calcString1.getString().equals(ZERO) && !this.operator.getOperator().equals("")) {
-					switch (this.operator.getOperator()) {
-					case PLUS:
-						this.result = this.calcString2.getOperand().add(this.calcString1.getOperand());
-						// this.calculationString = this.calculationString+SPACE+this.calcString1.getString()+SPACE+EQUALS;
-						afterEquals();
-						// afterEqualsChain();
-						break;
-					case MINUS:
-						this.result = this.calcString2.getOperand().subtract(this.calcString1.getOperand());
-						afterEqualsChain();
-						break;
-					case MULTIPLY:
-						this.result = this.calcString2.getOperand().multiply(this.calcString1.getOperand());
-						afterEqualsChain();
-						break;
-					case DIVIDE:
-						JOptionPane.showMessageDialog(null, DIVIDEBYZERO);
-						resetCalculator();
-						break;
-					}
-
-				}
 			}
 		}
 	}
 
 	/**
-	 * Méthode met à jour la variable calcString1. Appelle la méthode updateScreen
-	 * pour gérer les affichages du calcul (en haut de l'écran) et du résultat (en
-	 * bas de l'écran). Cette méthode est appelé lors d'un enchaînement d'appuis sur
-	 * la touche 'égale' et ne réinitialise pas l'état de la machine pour pouvoir
-	 * enchaîner les calculs.
+	 * Méthode appelée après le calcul si on enchaine les opérations en appuyant la
+	 * touche égale successivement. Met à jour les variables calcString1,
+	 * calcString2 et operand2. Appelle la méthode updateScreen pour gérer les
+	 * affichages du calcul (en haut de l'écran) et du résultat (en bas de l'écran)
+	 * puis réinitialise l'état de la machine pour accepter une nouvelle opérande.
 	 */
 	private void afterEqualsChain() {
-		this.calculationString = this.calcString1.getStringForScreen() + SPACE + this.previousOperator.getOperator()
+		this.calculationString = this.calcString2.getStringForScreen() + SPACE + this.previousOperator.getOperator()
 				+ SPACE + this.operand1.toString() + SPACE + EQUALS;
-		this.updateScreen(calculationString, UPPER);
+		this.updateScreen(this.calculationString, UPPER);
+		this.calcString2.setString(this.result.toPlainString());
+		this.operand2 = this.calcString2.getOperand();
 		this.calcString1.setString(this.result.toPlainString());
 		this.updateScreen(this.calcString1.getStringForScreen(), LOWER);
-	}
-
-	/**
-	 * Méthode met à jour la variable calcString1. Appelle la méthode updateScreen
-	 * pour gérer les affichages du calcul (en haut de l'écran) et du résultat (en
-	 * bas de l'écran) puis réinitialise l'état de la machine pour accepter une
-	 * nouvelle opérande.
-	 */
-	private void afterEquals() {
-		this.calculationString = this.calculationString + SPACE + this.calcString1.getStringForScreen() + SPACE + EQUALS;
-		this.updateScreen(calculationString, UPPER);
-		this.calcString1.setString(this.result.toPlainString());
 		this.initState = true;
-		this.updateScreen(this.calcString1.getStringForScreen(), LOWER);
 	}
 
 	/**
-	 * Méthode pour gérer les calculs après appui sur une des touches "opérateur"
+	 * Méthode pour gérer les calculs après appui sur une des touches "opérateur".
 	 * Effectue les calculs puis appelle la méthode afterCalculate pour gérer les
 	 * affichages et les variables.
 	 * 
@@ -357,26 +329,27 @@ public class Control implements Global {
 		case DIVIDE:
 			if (this.operand1.compareTo(BigDecimal.ZERO) == 0) {
 				JOptionPane.showMessageDialog(null, DIVIDEBYZERO);
+				resetCalculator();
 			} else {
-				this.result = this.operand2.divide(operand1);
+				this.result = this.operand2.divide(operand1, 10, RoundingMode.HALF_UP);
 				afterCalculate();
 			}
 			break;
-		case "":
+		case EQUALS:
 			this.calcString2.setString(this.calcString1.getString());
 			this.operand2 = this.calcString2.getOperand();
-			this.initState = true;
-			this.calculationString = calcString1.getStringForScreen() + SPACE + this.operator.getOperator();
+			this.calculationString = calcString2.getStringForScreen() + SPACE + this.operator.getOperator();
 			this.updateScreen(this.calculationString, UPPER);
+			this.initState = true;
 			break;
 		}
 	}
 
 	/**
-	 * Methode met à jour les variables calcString1, calcString2 et operand2.
-	 * Appelle la méthode updateScreen pour gérer les affichages du calcul (en haut
-	 * de l'écran) et du résultat (en bas de l'écran) puis réinitialise l'état de la
-	 * machine pour accepter une nouvelle opérande.
+	 * Méthode appelée après le calcul, met à jour les variables calcString1,
+	 * calcString2 et operand2. Appelle la méthode updateScreen pour gérer les
+	 * affichages du calcul (en haut de l'écran) et du résultat (en bas de l'écran)
+	 * puis réinitialise l'état de la machine pour accepter une nouvelle opérande.
 	 */
 	private void afterCalculate() {
 		this.calculationString = this.calculationString + SPACE + this.calcString1.getStringForScreen() + SPACE
@@ -421,6 +394,7 @@ public class Control implements Global {
 			calcString1.addString(buttonClicked);
 		} else {
 			calcString1.setString(buttonClicked);
+			initState = false;
 		}
 	}
 
@@ -453,7 +427,7 @@ public class Control implements Global {
 	}
 
 	/**
-	 * Méthode pour gérer le bouton 'correction' Gère également si on 'corrige' un
+	 * Méthode pour gérer le bouton 'correction'. Gère également si on 'corrige' un
 	 * nombre décimal (modifie le booleen 'decimalNumber en fonction si on enlève la
 	 * virgule).
 	 */

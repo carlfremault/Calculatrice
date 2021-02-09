@@ -37,22 +37,25 @@ public class FrmCalculatrice extends JFrame implements Global {
 	/**
 	 * Méthode qui gère l'affichage sur l'écran.
 	 * 
-	 * @param string = Information à afficher
+	 * @param string   = Information à afficher
 	 * @param position = position où afficher (UPPER ou LOWER en fonction)
 	 */
 	public void setLabelText(String string, String position) {
 		switch (position) {
 		case UPPER:
 			this.lblScreenUpper.setText(string);
+			System.out.println("FrmCalc 47 setlabeltext: string upper : " + string);
 			break;
 		case LOWER:
 			this.lblScreenLower.setText(string);
+			System.out.println("FrmCalc 51 setlabeltext: string lower : " + string);
 			break;
 		}
 	}
 
 	/**
 	 * Constructeur de l'interface utilisateur
+	 * 
 	 * @param control = le contrôleur associé
 	 */
 	public FrmCalculatrice(Control control) {

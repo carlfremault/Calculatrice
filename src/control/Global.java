@@ -39,5 +39,4 @@ public interface Global {
 
 	String SPACE = " ";
 	String DIVIDEBYZERO = "Impossible de diviser par zéro.";
-
 }

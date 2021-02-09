@@ -44,24 +44,28 @@ public class CalcString implements Global {
 	/**
 	 * Getter pour le contenu du CalcString.
 	 * 
-	 * @return le contenu du CalcString après avoir appelé la méthode removeZero
-	 *         pour enlever des zéros éventuels à la fin d'un nombre décimal.
+	 * @return le contenu du CalcString
 	 */
 	public String getString() {
-//		return removeZero(string);
 		return string;
 	}
 
 	/**
-	 * Getter pour le contenu du CalcString.
+	 * Getter pour le contenu du CalcString, formaté pour affichage.
 	 * 
-	 * @return le contenu du CalcString après avoir appelé la méthode removeZero
-	 *         pour enlever des zéros éventuels à la fin d'un nombre décimal, ainsi
-	 *         que la méthode removeDot pour enlever une virgule éventuelle à la fin
-	 *         d'un nombre décimal.
+	 * @return le contenu du CalcString après avoir vérifié s'il s'agit d'un nombre
+	 *         décimal. Si c'est le cas, suppression des zéros éventuels à la fin
+	 *         (et de la virgule si besoin).
 	 */
 	public String getStringForScreen() {
-		return removeDot(removeZero(string));
+		if (this.string.contains(".")) {
+			while ((this.string.endsWith("0") || this.string.endsWith(".")) && this.string.length() > 1
+					&& this.string.contains(".")) {
+				this.string = this.string.substring(0, string.length() - 1);
+			}
+			return this.string;
+		}
+		return string;
 	}
 
 	/**
@@ -80,33 +84,5 @@ public class CalcString implements Global {
 	 */
 	public void addString(String string) {
 		this.string = this.string + string;
-//			this.string = removeZero(this.string) + string;
-	}
-
-	/**
-	 * Méthode qui vérifie si un string termine par ".0" et l'enlève si c'est le cas.
-	 * 
-	 * @param string à vérifier
-	 * @return le string sans ".0" à la fin
-	 */
-	public String removeZero(String string) {
-		if (string.endsWith(".0")) {
-			string = string.substring(0, string.length() - 2);
-		}
-		return string;
-	}
-
-	/**
-	 * Méthode qui vérifie si un string termine par une virgule et l'enlève si c'est
-	 * le cas.
-	 * 
-	 * @param string à vérifier
-	 * @return le string sans virgule à la fin
-	 */
-	public String removeDot(String string) {
-		if (string.endsWith(".")) {
-			string = string.substring(0, string.length() - 1);
-		}
-		return string;
 	}
 }
