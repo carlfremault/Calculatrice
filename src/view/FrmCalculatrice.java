@@ -44,11 +44,9 @@ public class FrmCalculatrice extends JFrame implements Global {
 		switch (position) {
 		case UPPER:
 			this.lblScreenUpper.setText(string);
-			System.out.println("FrmCalc 47 setlabeltext: string upper : " + string);
 			break;
 		case LOWER:
 			this.lblScreenLower.setText(string);
-			System.out.println("FrmCalc 51 setlabeltext: string lower : " + string);
 			break;
 		}
 	}
