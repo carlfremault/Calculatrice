@@ -1,5 +1,5 @@
 # Calculatrice
-A simple calculator, using MVC architecture
+Calculatrice simple
 
 Pour ce projet POO j'ai créé une calculatrice en Java, avec une (simple) architecture MVC. Au fin de compte ce n'était pas si simple que ça! Quelques défis rencontrés et résolus en route:
 
