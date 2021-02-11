@@ -16,6 +16,43 @@ public class CalcString implements Global {
 	 * String qui contient le CalcString.
 	 */
 	private String string;
+	/**
+	 * Booléen qui définit si un nombre est décimal.
+	 */
+	private boolean decimalNumber = false;
+	/**
+	 * Getter pour booleen decimalNumber
+	 * @return decimalNumber
+	 */
+	public boolean isDecimalNumber() {
+		return decimalNumber;
+	}
+	/**
+	 * Setter pour booleen decimalNumber
+	 * @param decimalNumber (true ou false)
+	 */
+	public void setDecimalNumber(boolean decimalNumber) {
+		this.decimalNumber = decimalNumber;
+	}
+	/**
+	 * Booléen qui définit si la première opérande (et son String associé) est en
+	 * état initial (0).
+	 */
+	private boolean initState = true;
+	/**
+	 * Getter pour booleen initState
+	 * @return initState
+	 */
+	public boolean isInitState() {
+		return initState;
+	}
+	/**
+	 * Setter pour booleen initState
+	 * @param initState (true or false)
+	 */
+	public void setInitState(boolean initState) {
+		this.initState = initState;
+	}
 
 	/**
 	 * Constructeur

@@ -32,25 +32,6 @@ public class Control implements Global {
 	 * String pour définir deuxième opérande
 	 */
 	private CalcString calcString2;
-
-	/**
-	 * Getter pour calcString1
-	 * 
-	 * @return calcString1
-	 */
-	public CalcString getCalcString1() {
-		return this.calcString1;
-	}
-
-	/**
-	 * Getter pour calcString2
-	 * 
-	 * @return calcString2
-	 */
-	public CalcString getCalcString2() {
-		return this.calcString2;
-	}
-
 	/**
 	 * String pour affichage calcul entier
 	 */
@@ -75,16 +56,7 @@ public class Control implements Global {
 	 * Avant-dernier opérateur entré
 	 */
 	private Operator previousOperator;
-	/**
-	 * Booléen qui définit si un nombre est décimal.
-	 */
-	private boolean decimalNumber = false;
-	/**
-	 * Booléen qui définit si la première opérande (et son String associé) est en
-	 * état initial (0).
-	 */
-	private boolean initState = true;
-
+	
 	/**
 	 * Main méthode, point d'entrée de l'application
 	 * 
@@ -118,6 +90,8 @@ public class Control implements Global {
 	private void initializeCalculator() {
 		this.calcString1 = new CalcString();
 		this.calcString1.setString(ZERO);
+		this.calcString1.setDecimalNumber(false);
+		this.calcString1.setInitState(true);
 		this.calcString2 = new CalcString();
 		this.operator = new Operator();
 		this.operator.setOperator(EQUALS);
@@ -136,8 +110,8 @@ public class Control implements Global {
 		this.previousOperator.setOperator(EQUALS);
 		this.updateScreen(calcString1.getString(), LOWER);
 		this.updateScreen("", UPPER);
-		this.decimalNumber = false;
-		this.initState = true;
+		this.calcString1.setDecimalNumber(false);
+		this.calcString1.setInitState(true);
 		this.calculationString = "";
 	}
 
@@ -211,7 +185,7 @@ public class Control implements Global {
 		// CE and C
 		case CE:
 			calcString1.setString(ZERO);
-			initState = true;
+			this.calcString1.setInitState(true);
 			this.updateScreen(calcString1.getString(), LOWER);
 			break;
 		case C:
@@ -299,7 +273,7 @@ public class Control implements Global {
 		this.operand2 = this.calcString2.getOperand();
 		this.calcString1.setString(this.result.toPlainString());
 		this.updateScreen(this.calcString1.getStringForScreen(), LOWER);
-		this.initState = true;
+		this.calcString1.setInitState(true);
 	}
 
 	/**
@@ -340,7 +314,7 @@ public class Control implements Global {
 			this.operand2 = this.calcString2.getOperand();
 			this.calculationString = calcString2.getStringForScreen() + SPACE + this.operator.getOperator();
 			this.updateScreen(this.calculationString, UPPER);
-			this.initState = true;
+			this.calcString1.setInitState(true);
 			break;
 		}
 	}
@@ -359,7 +333,7 @@ public class Control implements Global {
 		this.operand2 = this.calcString2.getOperand();
 		this.calcString1.setString(this.result.toPlainString());
 		this.updateScreen(this.calcString1.getStringForScreen(), LOWER);
-		this.initState = true;
+		this.calcString1.setInitState(true);
 	}
 
 	/**
@@ -367,18 +341,18 @@ public class Control implements Global {
 	 * non.
 	 */
 	private void pressedComma() {
-		if (initState) {
+		if (this.calcString1.isInitState()) {
 			this.calcString1.setString(ZERO + COMMA);
-			initState = false;
+			this.calcString1.setInitState(false);
 		} else {
 			if (calcString1.getString().contains(COMMA)) {
-				decimalNumber = true;
+				this.calcString1.setDecimalNumber(true);
 			} else {
-				decimalNumber = false;
+				this.calcString1.setDecimalNumber(false);
 			}
-			if (!decimalNumber) {
+			if (!this.calcString1.isDecimalNumber()) {
 				calcString1.addString(COMMA);
-				decimalNumber = true;
+				this.calcString1.setDecimalNumber(true);
 			}
 		}
 	}
@@ -390,11 +364,11 @@ public class Control implements Global {
 	 * @param buttonClicked = le bouton appuyé
 	 */
 	private void pressedZero(String buttonClicked) {
-		if (!initState) {
+		if (!this.calcString1.isInitState()) {
 			calcString1.addString(buttonClicked);
 		} else {
 			calcString1.setString(buttonClicked);
-			initState = false;
+			this.calcString1.setInitState(false);
 		}
 	}
 
@@ -404,9 +378,9 @@ public class Control implements Global {
 	 * @param buttonClicked = le bouton appuyé
 	 */
 	private void numberPressed(String buttonClicked) {
-		if (initState) {
+		if (this.calcString1.isInitState()) {
 			calcString1.setString(buttonClicked);
-			initState = false;
+			this.calcString1.setInitState(false);
 		} else {
 			calcString1.addString(buttonClicked);
 		}
@@ -432,18 +406,18 @@ public class Control implements Global {
 	 * virgule).
 	 */
 	private void pressedBackspace() {
-		if (!initState) {
+		if (!this.calcString1.isInitState()) {
 			String numberToTreat = calcString1.getString();
 			if (numberToTreat.length() == 1) {
 				calcString1.setString(ZERO);
-				initState = true;
+				this.calcString1.setInitState(true);
 			} else {
 				if (calcString1.getString().charAt(calcString1.getString().length() - 1) == '.') {
-					decimalNumber = false;
+					this.calcString1.setDecimalNumber(false);
 				}
 				calcString1.setString(numberToTreat.substring(0, (calcString1.getString().length() - 1)));
 				if (calcString1.getString().equals(ZERO)) {
-					initState = true;
+					this.calcString1.setInitState(true);
 				}
 			}
 		}
