@@ -33,23 +33,23 @@ public class Control implements Global {
 	 */
 	private CalcString calcString2;
 
-	/**
-	 * Getter pour calcString1
-	 * 
-	 * @return calcString1
-	 */
-	public CalcString getCalcString1() {
-		return this.calcString1;
-	}
+//	/**
+//	 * Getter pour calcString1
+//	 * 
+//	 * @return calcString1
+//	 */
+//	public CalcString getCalcString1() {
+//		return this.calcString1;
+//	}
 
-	/**
-	 * Getter pour calcString2
-	 * 
-	 * @return calcString2
-	 */
-	public CalcString getCalcString2() {
-		return this.calcString2;
-	}
+//	/**
+//	 * Getter pour calcString2
+//	 * 
+//	 * @return calcString2
+//	 */
+//	public CalcString getCalcString2() {
+//		return this.calcString2;
+//	}
 
 	/**
 	 * String pour affichage calcul entier
